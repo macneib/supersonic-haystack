@@ -1,0 +1,22 @@
+{
+  "name": "supersonic-haystack",
+  "version": "1.0.0",
+  "description": "a test to get monorepo working in azure devops",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/macneib/supersonic-haystack.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/macneib/supersonic-haystack/issues"
+  },
+  "homepage": "https://github.com/macneib/supersonic-haystack#readme",
+  "devDependencies": {
+    "nodemon": "^2.0.7"
+  }
+}

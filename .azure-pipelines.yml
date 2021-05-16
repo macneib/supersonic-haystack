@@ -1,0 +1,72 @@
+pr:
+  autoCancel: false
+  branches:
+    include:
+    - main
+    - develop
+
+trigger:
+  batch: false
+  branches:
+    include:
+    - main
+    - develop
+
+resources:
+- repo: self
+
+stages:
+  - stage: Build_Queue
+    displayName: Build Queue
+    pool:
+      vmImage: 'ubuntu-latest'
+    variables:
+      IS_PR: $[ eq(variables['Build.Reason'], 'PullRequest') ]
+    jobs:
+      - template: .azure-pipelines/steps/install-node-modules.yml
+      - powershell: echo "##vso[task.setvariable variable=COMMANDS;isOutput=true]$(node ./tools/scripts/build-queue.js $(IS_PR))"
+        name: setCommands
+      - script: echo $(setCommands.COMMANDS)
+        name: echoCommands
+
+  - stage: dev
+    displayName: Dev Deployment
+    dependsOn: build
+    # condition: and(succeeded(), not(startsWith(variables['Build.SourceBranch'], 'refs/pull/')))
+    condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/develop'))
+    jobs:
+      - job: Helm
+        steps:
+          - script: echo Helm Step
+            displayName: Helm reason is $(Build.Reason)
+
+  - stage: DeployPullRequest
+    dependsOn: build
+    condition: and(succeeded(), startsWith(variables['Build.SourceBranch'], 'refs/pull/'))
+    displayName: Deploy Pull request
+    jobs:
+      - job: Helm
+
+        steps:
+          - script: echo Helm Step
+            displayName: Helm reason is $(Build.Reason)
+
+  - stage: qa
+    dependsOn: dev
+    condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/main'))
+    displayName: QA Deployment
+    jobs:
+      - job: Helm
+        steps:
+          - script: echo Helm Step
+            displayName: Helm reason is $(Build.Reason)
+
+  - stage: production
+    dependsOn: qa
+    condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/main'))
+    displayName: Production Deployment
+    jobs:
+      - job: Helm
+        steps:
+          - script: echo Helm Step
+            displayName: Helm reason is $(Build.Reason)
