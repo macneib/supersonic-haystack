@@ -30,17 +30,12 @@ stages:
           IS_PR: $[ eq(variables['Build.Reason'], 'PullRequest') ]
         steps:
           - template: .azure-pipelines/steps/install-node-modules.yml
-          #- bash: echo "##vso[task.setvariable variable=COMMANDS;isOutput=true]$(node ./tools/scripts/build-queue.js $(IS_PR))"
-          - bash: |
-              FOO="some value"
-              echo "##vso[task.setvariable variable=FOO]$FOO"
-          - bash: |
-              QUEUE=$(node ./tools/scripts/build-queue.js)
-              echo  "$(QUEUE)"
-              echo "##vso[task.setvariable variable=QUEUE]$QUEUE"
+          # - bash: echo "##vso[task.setvariable variable=COMMANDS;isOutput=true]$(node ./tools/scripts/build-queue.js $(IS_PR))"
+          # - bash: echo "##vso[task.setvariable variable=myStageOutputVar;isOutput=true]$myVar"
+          - bash: $(node ./tools/scripts/build-queue.js)
             name: buildQueue
-          - script: echo $(buildQueue.QUEUE)
-            name: echoQueue
+          # - script: echo $(buildQueue.QUEUE)
+          #   name: echoQueue
 
   # - stage: dev
   #   displayName: Dev Deployment
