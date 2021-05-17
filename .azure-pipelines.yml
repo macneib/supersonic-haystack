@@ -49,7 +49,8 @@ stages:
           COMMANDS: $[ dependencies.Build_Queue.outputs['setBuildQueue.BUILD_QUEUE'] ]
         steps:
           - template: .azure-pipelines/steps/install-node-modules.yml
-          - script: node ./tools/scripts/run-many.js '$(BUILD_QUEUE)' build1 build`
+          - script: node ./tools/scripts/run-many.js '$(BUILD_QUEUE)' build1 build
+
       - job: build2
         dependsOn: Build_Queue
         condition: |
@@ -66,7 +67,8 @@ stages:
           COMMANDS: $[ dependencies.Build_Queue.outputs['setBuildQueue.BUILD_QUEUE'] ]
         steps:
           - template: .azure-pipelines/steps/install-node-modules.yml
-          - script: node ./tools/scripts/run-many.js '$(BUILD_QUEUE)' build2 build`
+          - script: node ./tools/scripts/run-many.js '$(BUILD_QUEUE)' build2 build
+
       - job: build3
         dependsOn: Build_Queue
         condition: |
@@ -83,7 +85,7 @@ stages:
           COMMANDS: $[ dependencies.Build_Queue.outputs['setBuildQueue.BUILD_QUEUE'] ]
         steps:
           - template: .azure-pipelines/steps/install-node-modules.yml
-          - script: node ./tools/scripts/run-many.js '$(BUILD_QUEUE)' build3 build`
+          - script: node ./tools/scripts/run-many.js '$(BUILD_QUEUE)' build3 build
 
 
       # Each App and it's template that can be built.
