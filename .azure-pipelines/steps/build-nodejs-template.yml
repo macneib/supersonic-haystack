@@ -1,14 +1,14 @@
 #build-nodejs-template.yml
 parameters:
   name: '--'
-  solutionFolder: '--'
+  appDirectory: '--'
 
 jobs:
 - job: ${{ parameters.name }}
   displayName: 'Build Project: ${{ parameters.name }}'
   dependsOn: Build_Queue
   continueOnError: true
-  condition: and(succeeded(), contains(dependencies.Build_Queue.outputs['setBuildQueue.buildQueue'], '${{ parameters.solutionFolder }}'))
+  condition: and(succeeded(), contains(dependencies.Build_Queue.outputs['setBuildQueue.buildQueue'], '${{ parameters.appDirectory }}'))
   steps:
     - task: Bash@3
       displayName: 'Build packages'

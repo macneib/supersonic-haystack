@@ -44,12 +44,15 @@ stages:
       - template: .azure-pipelines/steps/build-nodejs-template.yml
         parameters:
           name: foo_app
+          appDirectory: 'apps/foo-app'
       - template: .azure-pipelines/steps/build-nodejs-template.yml
         parameters:
           name: bar_app
+          appDirectory: 'apps/bar-app'
       - template: .azure-pipelines/steps/build-nodejs-template.yml
         parameters:
           name: baz_app
+          appDirectory: 'apps/baz-app'
 
   # - stage: dev
   #   displayName: Dev Deployment

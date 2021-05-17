@@ -6,7 +6,7 @@ const  shell = require('shelljs');
 shell.config.silent = true;
 
 let affected = shell.exec('./tools/scripts/build_queue.sh')
-let affectedToBuild = affected.stdout.replace(/^\s+|\s+$/g, '').split(" ");
+let affectedToBuild = affected.stdout.replace(/^\s+|\s+$/g, '').replace(/-/g, "_").split(" ");
 // console.log('affectedToBuild', affectedToBuild);
 for (var i = 0; i < affectedToBuild.length; i++) {
   console.log(affectedToBuild[i])
