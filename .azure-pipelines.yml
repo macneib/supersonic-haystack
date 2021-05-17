@@ -23,38 +23,82 @@ stages:
     jobs:
       # set up node.js environment
       - job: Build_Queue
-        variables:
-            IS_PR: $[ eq(variables['Build.Reason'], 'PullRequest') ]      
+        # variables:
+        #     IS_PR: $[ eq(variables['Build.Reason'], 'PullRequest') ]
         pool:
           vmImage: 'ubuntu-latest'
         steps:
           - template: .azure-pipelines/steps/install-node-modules.yml
-      # Construct a queue of apps to be built
-      # - job: Build_Queue
-        # dependsOn: initial_setup
-        # pool:
-        #   vmImage: 'ubuntu-latest'
-        # variables:
-        #   IS_PR: $[ eq(variables['Build.Reason'], 'PullRequest') ]
-        # steps:
-          - bash: echo '##vso[task.setvariable variable=buildQueue;isOutput=true]$(npm run affected)'
+          - bash: echo '##vso[task.setvariable variable=BUILD_QUEUE;isOutput=true]$(npm run affected)'
             name: setBuildQueue
-          - script: echo "$(setBuildQueue.buildQueue)"
+          - script: echo "$(setBuildQueue.BUILD_QUEUE)"
             name: echoBuildueue
+      - job: build1
+        dependsOn: Build_Queue
+        condition: |
+          and(
+            succeeded(),
+            not(contains(
+              dependencies.Build_Queue.outputs['setBuildQueue.BUILD_QUEUE'],
+              '"build1":[]'
+            ))
+          )
+        pool:
+          vmImage: 'ubuntu-latest'
+        variables:
+          COMMANDS: $[ dependencies.Build_Queue.outputs['setBuildQueue.BUILD_QUEUE'] ]
+        steps:
+          - template: .azure-pipelines/steps/install-node-modules.yml
+          - script: node ./tools/scripts/run-many.js '$(BUILD_QUEUE)' build1 build`
+      - job: build2
+        dependsOn: Build_Queue
+        condition: |
+          and(
+            succeeded(),
+            not(contains(
+              dependencies.Build_Queue.outputs['setBuildQueue.BUILD_QUEUE'],
+              '"build1":[]'
+            ))
+          )
+        pool:
+          vmImage: 'ubuntu-latest'
+        variables:
+          COMMANDS: $[ dependencies.Build_Queue.outputs['setBuildQueue.BUILD_QUEUE'] ]
+        steps:
+          - template: .azure-pipelines/steps/install-node-modules.yml
+          - script: node ./tools/scripts/run-many.js '$(BUILD_QUEUE)' build2 build`
+      - job: build3
+        dependsOn: Build_Queue
+        condition: |
+          and(
+            succeeded(),
+            not(contains(
+              dependencies.Build_Queue.outputs['setBuildQueue.BUILD_QUEUE'],
+              '"build1":[]'
+            ))
+          )
+        pool:
+          vmImage: 'ubuntu-latest'
+        variables:
+          COMMANDS: $[ dependencies.Build_Queue.outputs['setBuildQueue.BUILD_QUEUE'] ]
+        steps:
+          - template: .azure-pipelines/steps/install-node-modules.yml
+          - script: node ./tools/scripts/run-many.js '$(BUILD_QUEUE)' build3 build`
+
 
       # Each App and it's template that can be built.
-      - template: .azure-pipelines/steps/build-nodejs-template.yml
-        parameters:
-          name: foo_app
-          appDirectory: 'apps/foo-app'
-      - template: .azure-pipelines/steps/build-nodejs-template.yml
-        parameters:
-          name: bar_app
-          appDirectory: 'apps/bar-app'
-      - template: .azure-pipelines/steps/build-nodejs-template.yml
-        parameters:
-          name: baz_app
-          appDirectory: 'apps/baz-app'
+      # - template: .azure-pipelines/steps/build-nodejs-template.yml
+      #   parameters:
+      #     name: foo_app
+      #     appDirectory: 'apps/foo-app'
+      # - template: .azure-pipelines/steps/build-nodejs-template.yml
+      #   parameters:
+      #     name: bar_app
+      #     appDirectory: 'apps/bar-app'
+      # - template: .azure-pipelines/steps/build-nodejs-template.yml
+      #   parameters:
+      #     name: baz_app
+      #     appDirectory: 'apps/baz-app'
 
   # - stage: dev
   #   displayName: Dev Deployment

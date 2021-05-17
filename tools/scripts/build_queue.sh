@@ -11,8 +11,8 @@ branch=`git rev-parse --abbrev-ref HEAD` #set default stage
 # Retrieve the modified files, excluding the merge commit
 merge_commit_hash=`git rev-parse --short HEAD`
 build_commit_hash=`git rev-list --no-merges -n1 HEAD`
-files="$(git --no-pager diff --name-only HEAD HEAD~)"
-# files="$(git --no-pager diff --name-only FETCH_HEAD $(git merge-base FETCH_HEAD main))"
+# files="$(git --no-pager diff --name-only HEAD HEAD~)"
+files="$(git --no-pager diff --name-only FETCH_HEAD $(git merge-base FETCH_HEAD main))"
 apps=()
 
 # Change detection in commons and solve for which apps are affected
@@ -21,6 +21,7 @@ do
     # get directories
     common="$(echo $file | cut -d '/' -f2)"
     if test -d commons/$common; then
+        # find any instances common instance is used in apps
         for i in $(find . -type f -not -path "./node_modules/*" -not -path "./.git/*" -print | xargs grep "commons/$common" | cut -d '/' -f3);
         do
             affected="$i"
