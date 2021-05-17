@@ -23,11 +23,17 @@ stages:
     variables:
       IS_PR: $[ eq(variables['Build.Reason'], 'PullRequest') ]
     jobs:
-      - template: .azure-pipelines/steps/install-node-modules.yml
-      - powershell: echo "##vso[task.setvariable variable=COMMANDS;isOutput=true]$(node ./tools/scripts/build-queue.js $(IS_PR))"
-        name: setCommands
-      - script: echo $(setCommands.COMMANDS)
-        name: echoCommands
+      - job: initial_setup
+        pool:
+          vmImage: 'ubuntu-latest'
+        variables:
+          IS_PR: $[ eq(variables['Build.Reason'], 'PullRequest') ]
+        steps:
+          - template: .azure-pipelines/steps/install-node-modules.yml
+          - bash: echo "##vso[task.setvariable variable=COMMANDS;isOutput=true]$(node ./tools/scripts/build-queue.js $(IS_PR))"
+            name: setCommands
+          - script: echo $(setCommands.COMMANDS)
+            name: echoCommands
 
   - stage: dev
     displayName: Dev Deployment
