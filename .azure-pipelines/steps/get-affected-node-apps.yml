@@ -1,0 +1,14 @@
+steps:
+  - task: NodeTool@0
+    inputs:
+      versionSpec: '12.x'
+    displayName: 'Install Node.js'
+  # - task: 1ESLighthouseEng.PipelineArtifactCaching.RestoreAndSaveCacheV1.RestoreAndSaveCache@1
+  #   inputs:
+  #     keyfile: '**/yarn.lock, !**/node_modules/**/yarn.lock, !**/.*/**/yarn.lock'
+  #     targetfolder: '**/node_modules, !**/node_modules/**/node_modules'
+  #     vstsFeed: 'nx_azure_node_modules_cache_feed'
+  - script: |
+      npm affected
+    displayName: Get affected apps that have been changed
+    # condition: ne(variables['CacheRestored'], 'true')

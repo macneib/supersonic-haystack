@@ -4,6 +4,7 @@
   "description": "a test to get monorepo working in azure devops",
   "main": "index.js",
   "scripts": {
+    "affected": "node ./tools/scripts/build-queue.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
