@@ -11,8 +11,8 @@ branch=`git rev-parse --abbrev-ref HEAD` #set default stage
 # Retrieve the modified files, excluding the merge commit
 merge_commit_hash=`git rev-parse --short HEAD`
 build_commit_hash=`git rev-list --no-merges -n1 HEAD`
-# files="$(git --no-pager diff --name-only HEAD HEAD~)"
-files="$(git --no-pager diff --name-only FETCH_HEAD $(git merge-base FETCH_HEAD main))"
+files="$(git --no-pager diff --name-only HEAD HEAD~)"
+#files="$(git --no-pager diff --name-only FETCH_HEAD $(git merge-base FETCH_HEAD main))"
 apps=()
 
 # Change detection in commons and solve for which apps are affected
