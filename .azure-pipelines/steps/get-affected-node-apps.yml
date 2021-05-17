@@ -9,6 +9,6 @@ steps:
   #     targetfolder: '**/node_modules, !**/node_modules/**/node_modules'
   #     vstsFeed: 'nx_azure_node_modules_cache_feed'
   - script: |
-      npm run affected
+      echo '##vso[task.setvariable variable=BUILD_QUEUE;isOutput=true]$(npm run affected)'
     displayName: Get affected apps that have been changed
     # condition: ne(variables['CacheRestored'], 'true')
