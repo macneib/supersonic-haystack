@@ -1,12 +1,16 @@
+#build-nodejs-template.yml
 parameters:
   name: '--'
 
 jobs:
-  - job: ${{ parameters.name }}
-    dependsOn: Build_Queue
-    continueOnError: true
-    # variables:
-    #   myBuildQueue: $[ dependencies.Build_Queue.outputs['setBuildQueue.buildQueue'] ]
-    # condition: and(succeeded(), contains(dependencies.Build_Queue.outputs['setBuildQueue.buildQueue']))
-    steps:
-    - script: echo "we are here"
+- job: ${{ parameters.name }}
+  displayName: 'Build Project'
+  dependsOn: Build_Queue
+  continueOnError: true
+  steps:
+    - task: Bash@3
+      displayName: 'Build packages'
+      inputs:
+        targetType: 'inline'
+        script: |
+          echo Build all packages needed
