@@ -33,6 +33,13 @@ stages:
           # - bash: echo "##vso[task.setvariable variable=COMMANDS;isOutput=true]$(node ./tools/scripts/build-queue.js $(IS_PR))"
           # - bash: echo "##vso[task.setvariable variable=myStageOutputVar;isOutput=true]$myVar"
           - bash: |
+              FOO="some value"
+              echo "##vso[task.setvariable variable=FOO]$FOO"      
+          # Using the $() syntax, the value is replaced inside Azure Pipelines before being submitted to the script task
+          - bash: echo "$(FOO)"
+          # The same variable is also present as environmental variable in scripts; here the variable expansion happens within bash
+          - bash: echo "$FOO"
+          - bash: |
               BUILD_QUEUE="$(node ./tools/scripts/build-queue.js)"
               echo "##vso[task.setvariable variable=BUILD_QUEUE;isOutput=true]$BUILD_QUEUE"
               echo "foo"
