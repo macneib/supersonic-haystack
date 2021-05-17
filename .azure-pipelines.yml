@@ -46,7 +46,7 @@ stages:
         pool:
           vmImage: 'ubuntu-latest'
         variables:
-          COMMANDS: $[ dependencies.Build_Queue.outputs['setBuildQueue.BUILD_QUEUE'] ]
+          BUILD_QUEUE: $[ dependencies.Build_Queue.outputs['setBuildQueue.BUILD_QUEUE'] ]
         steps:
           - template: .azure-pipelines/steps/install-node-modules.yml
           - script: node ./tools/scripts/run-many.js '$(BUILD_QUEUE)' build1 build
@@ -64,7 +64,7 @@ stages:
         pool:
           vmImage: 'ubuntu-latest'
         variables:
-          COMMANDS: $[ dependencies.Build_Queue.outputs['setBuildQueue.BUILD_QUEUE'] ]
+          BUILD_QUEUE: $[ dependencies.Build_Queue.outputs['setBuildQueue.BUILD_QUEUE'] ]
         steps:
           - template: .azure-pipelines/steps/install-node-modules.yml
           - script: node ./tools/scripts/run-many.js '$(BUILD_QUEUE)' build2 build
@@ -82,7 +82,7 @@ stages:
         pool:
           vmImage: 'ubuntu-latest'
         variables:
-          COMMANDS: $[ dependencies.Build_Queue.outputs['setBuildQueue.BUILD_QUEUE'] ]
+          BUILD_QUEUE: $[ dependencies.Build_Queue.outputs['setBuildQueue.BUILD_QUEUE'] ]
         steps:
           - template: .azure-pipelines/steps/install-node-modules.yml
           - script: node ./tools/scripts/run-many.js '$(BUILD_QUEUE)' build3 build
