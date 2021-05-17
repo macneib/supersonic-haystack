@@ -37,7 +37,7 @@ stages:
 
   - stage: dev
     displayName: Dev Deployment
-    dependsOn: build
+    dependsOn: Build_Queue
     # condition: and(succeeded(), not(startsWith(variables['Build.SourceBranch'], 'refs/pull/')))
     condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/develop'))
     jobs:
@@ -47,7 +47,7 @@ stages:
             displayName: Helm reason is $(Build.Reason)
 
   - stage: DeployPullRequest
-    dependsOn: build
+    dependsOn: Build_Queue
     condition: and(succeeded(), startsWith(variables['Build.SourceBranch'], 'refs/pull/'))
     displayName: Deploy Pull request
     jobs:
