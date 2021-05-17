@@ -35,6 +35,7 @@ stages:
           - bash: |
               BUILD_QUEUE="$(node ./tools/scripts/build-queue.js)"
               echo "##vso[task.setvariable variable=BUILD_QUEUE;isOutput=true]$BUILD_QUEUE"
+              echo "foo"
               echo $BUILD_QUEUE
             name: buildQueue
           - script: echo "$(buildQueue.BUILD_QUEUE)"
