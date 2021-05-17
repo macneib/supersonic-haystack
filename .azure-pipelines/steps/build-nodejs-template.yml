@@ -7,6 +7,6 @@ jobs:
   continueOnError: true
   variables:
     myBuildQueue: $[ dependencies.Build_Queue.outputs['setBuildQueue.buildQueue'] ]
-  condition: and(succeeded(), contains(dependencies.Build_Queue.outputs['setBuildQueue.buildQueue'], '${{ parameters.solutionFolder }}'))
+  condition: and(succeeded(), contains(dependencies.Build_Queue.outputs['setBuildQueue.buildQueue']))
   steps:
-  - script: echo "we're here"
+  - script: echo "we are here"
