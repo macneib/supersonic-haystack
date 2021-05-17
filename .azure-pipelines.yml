@@ -22,19 +22,21 @@ stages:
       vmImage: 'ubuntu-latest'
     jobs:
       # set up node.js environment
-      - job: initial_setup
+      - job: Build_Queue
+        variables:
+            IS_PR: $[ eq(variables['Build.Reason'], 'PullRequest') ]      
         pool:
           vmImage: 'ubuntu-latest'
         steps:
           - template: .azure-pipelines/steps/install-node-modules.yml
       # Construct a queue of apps to be built
-      - job: Build_Queue
-        dependsOn: initial_setup
-        pool:
-          vmImage: 'ubuntu-latest'
-        variables:
-          IS_PR: $[ eq(variables['Build.Reason'], 'PullRequest') ]
-        steps:
+      # - job: Build_Queue
+        # dependsOn: initial_setup
+        # pool:
+        #   vmImage: 'ubuntu-latest'
+        # variables:
+        #   IS_PR: $[ eq(variables['Build.Reason'], 'PullRequest') ]
+        # steps:
           - bash: echo '##vso[task.setvariable variable=buildQueue;isOutput=true]$(npm run affected)'
             name: setBuildQueue
           - script: echo "$(setBuildQueue.buildQueue)"
