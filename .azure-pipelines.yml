@@ -29,7 +29,7 @@ stages:
           vmImage: 'ubuntu-latest'
         steps:
           - template: .azure-pipelines/steps/install-node-modules.yml
-          - bash: echo '##vso[task.setvariable variable=BUILD_QUEUE;isOutput=true]$(npm run affected)'
+          - bash: echo '##vso[task.setvariable variable=BUILD_QUEUE;isOutput=true]$(node ./tools/scripts/build-queue.js)'
             name: setBuildQueue
           - script: echo "$(setBuildQueue.BUILD_QUEUE)"
             name: echoBuildueue
@@ -58,7 +58,7 @@ stages:
             succeeded(),
             not(contains(
               dependencies.Build_Queue.outputs['setBuildQueue.BUILD_QUEUE'],
-              '"build1":[]'
+              '"build2":[]'
             ))
           )
         pool:
@@ -76,7 +76,7 @@ stages:
             succeeded(),
             not(contains(
               dependencies.Build_Queue.outputs['setBuildQueue.BUILD_QUEUE'],
-              '"build1":[]'
+              '"build3":[]'
             ))
           )
         pool:
