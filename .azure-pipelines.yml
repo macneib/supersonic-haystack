@@ -31,7 +31,9 @@ stages:
         steps:
           - template: .azure-pipelines/steps/install-node-modules.yml
           #- bash: echo "##vso[task.setvariable variable=COMMANDS;isOutput=true]$(node ./tools/scripts/build-queue.js $(IS_PR))"
-          - bash: echo "##vso[task.setvariable variable=QUEUE;isOutput=true]$(node ./tools/scripts/build-queue.js)"
+          - bash: |
+              set -x
+              echo "##vso[task.setvariable variable=QUEUE;isOutput=true]$(node ./tools/scripts/build-queue.js)"
             name: buildQueue
           - script: echo $(buildQueue.QUEUE)
             name: echoQueue
