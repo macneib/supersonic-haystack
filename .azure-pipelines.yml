@@ -30,49 +30,49 @@ stages:
           IS_PR: $[ eq(variables['Build.Reason'], 'PullRequest') ]
         steps:
           - template: .azure-pipelines/steps/install-node-modules.yml
-          - bash: echo "##vso[task.setvariable variable=COMMANDS;isOutput=true]$(node ./tools/scripts/build-queue.js $(IS_PR))"
-            name: setCommands
-          - script: echo $(setCommands.COMMANDS)
-            name: echoCommands
+          - bash: echo "##vso[task.setvariable variable=QUEUED;isOutput=true]$(node ./tools/scripts/build-queue.js $(IS_PR))"
+            name: buildQueue
+          - script: echo $(buildQueue.QUEUED)
+            name: echoQueue
 
-  - stage: dev
-    displayName: Dev Deployment
-    dependsOn: Build_Queue
-    # condition: and(succeeded(), not(startsWith(variables['Build.SourceBranch'], 'refs/pull/')))
-    condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/develop'))
-    jobs:
-      - job: Helm
-        steps:
-          - script: echo Helm Step
-            displayName: Helm reason is $(Build.Reason)
+  # - stage: dev
+  #   displayName: Dev Deployment
+  #   dependsOn: Build_Queue
+  #   # condition: and(succeeded(), not(startsWith(variables['Build.SourceBranch'], 'refs/pull/')))
+  #   condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/develop'))
+  #   jobs:
+  #     - job: Helm
+  #       steps:
+  #         - script: echo Helm Step
+  #           displayName: Helm reason is $(Build.Reason)
 
-  - stage: DeployPullRequest
-    dependsOn: Build_Queue
-    condition: and(succeeded(), startsWith(variables['Build.SourceBranch'], 'refs/pull/'))
-    displayName: Deploy Pull request
-    jobs:
-      - job: Helm
+  # - stage: DeployPullRequest
+  #   dependsOn: Build_Queue
+  #   condition: and(succeeded(), startsWith(variables['Build.SourceBranch'], 'refs/pull/'))
+  #   displayName: Deploy Pull request
+  #   jobs:
+  #     - job: Helm
 
-        steps:
-          - script: echo Helm Step
-            displayName: Helm reason is $(Build.Reason)
+  #       steps:
+  #         - script: echo Helm Step
+  #           displayName: Helm reason is $(Build.Reason)
 
-  - stage: qa
-    dependsOn: dev
-    condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/main'))
-    displayName: QA Deployment
-    jobs:
-      - job: Helm
-        steps:
-          - script: echo Helm Step
-            displayName: Helm reason is $(Build.Reason)
+  # - stage: qa
+  #   dependsOn: dev
+  #   condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/main'))
+  #   displayName: QA Deployment
+  #   jobs:
+  #     - job: Helm
+  #       steps:
+  #         - script: echo Helm Step
+  #           displayName: Helm reason is $(Build.Reason)
 
-  - stage: production
-    dependsOn: qa
-    condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/main'))
-    displayName: Production Deployment
-    jobs:
-      - job: Helm
-        steps:
-          - script: echo Helm Step
-            displayName: Helm reason is $(Build.Reason)
+  # - stage: production
+  #   dependsOn: qa
+  #   condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/main'))
+  #   displayName: Production Deployment
+  #   jobs:
+  #     - job: Helm
+  #       steps:
+  #         - script: echo Helm Step
+  #           displayName: Helm reason is $(Build.Reason)
