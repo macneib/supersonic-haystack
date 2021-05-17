@@ -43,13 +43,13 @@ stages:
       # Each App and it's template that can be built.
       - template: .azure-pipelines/steps/build-nodejs-template.yml
         parameters:
-          name: foo-app
+          name: foo_app
       - template: .azure-pipelines/steps/build-nodejs-template.yml
         parameters:
-          name: bar-app
+          name: bar_app
       - template: .azure-pipelines/steps/build-nodejs-template.yml
         parameters:
-          name: baz-app
+          name: baz_app
 
   # - stage: dev
   #   displayName: Dev Deployment
