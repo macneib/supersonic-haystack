@@ -5,8 +5,8 @@ jobs:
 - job: ${{ parameters.name }}
   dependsOn: Build_Queue
   continueOnError: true
-  variables:
-    myBuildQueue: $[ dependencies.Build_Queue.outputs['setBuildQueue.buildQueue'] ]
-  condition: and(succeeded(), contains(dependencies.Build_Queue.outputs['setBuildQueue.buildQueue']))
+  # variables:
+  #   myBuildQueue: $[ dependencies.Build_Queue.outputs['setBuildQueue.buildQueue'] ]
+  # condition: and(succeeded(), contains(dependencies.Build_Queue.outputs['setBuildQueue.buildQueue']))
   steps:
   - script: echo "we are here"
