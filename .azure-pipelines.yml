@@ -29,7 +29,7 @@ stages:
           vmImage: 'ubuntu-latest'
         steps:
           - template: .azure-pipelines/steps/install-node-modules.yml
-          - bash: echo '##vso[task.setvariable variable=BUILD_QUEUE;isOutput=true]$(node ./tools/scripts/build-queue.js)'
+          - powershell: echo '##vso[task.setvariable variable=BUILD_QUEUE;isOutput=true]$(node ./tools/scripts/build-queue.js)'
             name: setBuildQueue
           - script: echo "$(setBuildQueue.BUILD_QUEUE)"
             name: echoBuildueue
