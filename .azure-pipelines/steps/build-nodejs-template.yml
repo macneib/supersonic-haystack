@@ -1,0 +1,12 @@
+parameters:
+    name: '--'
+
+jobs:
+- job: ${{ parameters.name }}
+  dependsOn: Build_Queue
+  continueOnError: true
+  variables:
+    myBuildQueue: $[ dependencies.Build_Queue.outputs['setBuildQueue.buildQueue'] ]
+  condition: and(succeeded(), contains(dependencies.Build_Queue.outputs['setBuildQueue.buildQueue'], '${{ parameters.solutionFolder }}'))
+  steps:
+  - script: echo "we're here"

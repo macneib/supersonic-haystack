@@ -16,26 +16,40 @@ resources:
 - repo: self
 
 stages:
-  - stage: Build_Queue
+  - stage: ci
     displayName: Build Queue
     pool:
       vmImage: 'ubuntu-latest'
-    variables:
-      IS_PR: $[ eq(variables['Build.Reason'], 'PullRequest') ]
     jobs:
+      # set up node.js environment
       - job: initial_setup
+        pool:
+          vmImage: 'ubuntu-latest'
+        steps:
+          - template: .azure-pipelines/steps/install-node-modules.yml
+      # Construct a queue of apps to be built
+      - job: Build_Queue
+        dependsOn: initial_setup
         pool:
           vmImage: 'ubuntu-latest'
         variables:
           IS_PR: $[ eq(variables['Build.Reason'], 'PullRequest') ]
         steps:
-          - template: .azure-pipelines/steps/install-node-modules.yml
-          # - template: .azure-pipelines/steps/get-affected-node-apps.yml
-          # name: buildQueue
-          - bash: echo '##vso[task.setvariable variable=BUILD_QUEUE;isOutput=true]$(npm run affected)'
+          - bash: echo '##vso[task.setvariable variable=buildQueue;isOutput=true]$(npm run affected)'
             name: setQueue
-          - script: echo "$(setQueue.BUILD_QUEUE)"
+          - script: echo "$(setQueue.buildQueue)"
             name: echoQueue
+
+          # Each App and it's template that can be built.
+          - template: .azure-pipelines/steps/build-nodejs-template.yml
+            parameters:
+              name: foo-app
+          - template: .azure-pipelines/steps/build-nodejs-template.yml
+            parameters:
+              name: bar-app
+          - template: .azure-pipelines/steps/build-nodejs-template.yml
+            parameters:
+              name: baz-app
 
   # - stage: dev
   #   displayName: Dev Deployment
