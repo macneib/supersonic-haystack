@@ -40,16 +40,16 @@ stages:
           - script: echo "$(setQueue.buildQueue)"
             name: echoQueue
 
-          # Each App and it's template that can be built.
-          - template: .azure-pipelines/steps/build-nodejs-template.yml
-            parameters:
-              name: foo-app
-          - template: .azure-pipelines/steps/build-nodejs-template.yml
-            parameters:
-              name: bar-app
-          - template: .azure-pipelines/steps/build-nodejs-template.yml
-            parameters:
-              name: baz-app
+      # Each App and it's template that can be built.
+      - template: .azure-pipelines/steps/build-nodejs-template.yml
+        parameters:
+          name: foo-app
+      - template: .azure-pipelines/steps/build-nodejs-template.yml
+        parameters:
+          name: bar-app
+      - template: .azure-pipelines/steps/build-nodejs-template.yml
+        parameters:
+          name: baz-app
 
   # - stage: dev
   #   displayName: Dev Deployment
