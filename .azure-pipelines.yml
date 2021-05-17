@@ -37,7 +37,7 @@ stages:
         steps:
           - bash: echo '##vso[task.setvariable variable=buildQueue;isOutput=true]$(npm run affected)'
             name: setBuildQueue
-          - script: echo "$(setQueue.buildQueue)"
+          - script: echo "$(setBuildQueue.buildQueue)"
             name: echoBuildueue
 
       # Each App and it's template that can be built.
