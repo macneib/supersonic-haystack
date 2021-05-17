@@ -5,6 +5,7 @@ const baseSha = isMaster ? 'origin/master~1' : 'origin/master';
 const  shell = require('shelljs');
 shell.config.silent = true;
 
+console.log('affected');
 
 let affected = shell.exec('./tools/scripts/build_queue.sh')
 let affectedToBuild = affected.stdout.replace(/^\s+|\s+$/g, '').split(" ");
