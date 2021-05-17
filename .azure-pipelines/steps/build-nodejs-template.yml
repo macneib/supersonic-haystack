@@ -8,6 +8,8 @@ jobs:
   displayName: 'Build Project: ${{ parameters.name }}'
   dependsOn: Build_Queue
   continueOnError: true
+  variables:
+    myBuildQueue: $[ dependencies.Build_Queue.outputs['setBuildQueue.buildQueue'] ]  
   condition: and(succeeded(), contains(dependencies.Build_Queue.outputs['setBuildQueue.buildQueue'], '${{ parameters.appDirectory }}'))
   steps:
     - task: Bash@3
@@ -15,4 +17,4 @@ jobs:
       inputs:
         targetType: 'inline'
         script: |
-          echo Build all packages needed
+          echo "Build Queue init: $(buildQueueInit) and from parameters $(myBuildQueue)"     
