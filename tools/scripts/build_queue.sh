@@ -12,6 +12,7 @@ branch=`git rev-parse --abbrev-ref HEAD` #set default stage
 merge_commit_hash=`git rev-parse --short HEAD`
 build_commit_hash=`git rev-list --no-merges -n1 HEAD`
 files="$(git --no-pager diff --name-only FETCH_HEAD $(git merge-base FETCH_HEAD main))"
+
 # files="$(git diff-tree --no-commit-id --name-only -r $build_commit_hash)"
 apps=()
 commons=()
