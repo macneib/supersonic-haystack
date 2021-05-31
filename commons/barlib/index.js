@@ -1,3 +1,3 @@
 export function barLib() {
-    return 'bar-lib';
+    return 'hi bar-lib';
 }
