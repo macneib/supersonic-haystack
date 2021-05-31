@@ -19,8 +19,8 @@ apps=()
 for file in $files
 do
     # get directories
-    common="$(echo $file | cut -d '/' -f2)"
-    if test -d commons/$common; then
+    common=$(cut -d '/' -f2 <<< $file)
+    if [ -d commons/$common ]; then
         # find any instances common instance is used in apps
         for i in $(find . -type f -not -path "./node_modules/*" -not -path "./.git/*" -print | xargs grep "commons/$common" | cut -d '/' -f3);
         do
@@ -33,8 +33,8 @@ done
 # Change detection in apps only
 for file in $files
 do
-    app="$(echo $file | cut -d '/' -f2)"
-    if test -d apps/$app; then
+    app=$(cut -d '/' -f2 <<< $file)
+    if [ -d apps/$app ]; then
         apps+=($app);
     fi
 done
