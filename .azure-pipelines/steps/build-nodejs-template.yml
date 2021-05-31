@@ -1,0 +1,20 @@
+#build-nodejs-template.yml
+parameters:
+  name: '--'
+  appDirectory: '--'
+
+jobs:
+- job: ${{ parameters.name }}
+  displayName: 'Build Project: ${{ parameters.name }}'
+  dependsOn: Build_Queue
+  continueOnError: true
+  variables:
+    myBuildQueue: $[ dependencies.Build_Queue.outputs['setBuildQueue.buildQueue'] ]  
+  condition: and(succeeded(), contains(dependencies.Build_Queue.outputs['setBuildQueue.buildQueue'], '${{ parameters.appDirectory }}'))
+  steps:
+    - task: Bash@3
+      displayName: 'Build packages'
+      inputs:
+        targetType: 'inline'
+        script: |
+          echo "Build Queue init: $(buildQueueInit) and from parameters $(myBuildQueue)"     
